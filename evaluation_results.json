@@ -1,0 +1,77 @@
+{
+  "timestamp": 1787371131.9883747,
+  "test_cases": [
+    {
+      "test_name": "Budget Constraint Enforcement",
+      "query": "jeans under 2000",
+      "passed": true,
+      "products_returned": 10,
+      "budget_violations": [],
+      "max_price_in_results": 1999
+    },
+    {
+      "test_name": "No-Match Handling",
+      "query": "jackets under 100",
+      "passed": true,
+      "returns_empty": true,
+      "message": "No matching products were found satisfying your specific budget or category requirements.",
+      "graceful_error": true
+    },
+    {
+      "test_name": "Category Filtering Accuracy",
+      "query": "blue t-shirts under 1000",
+      "passed": true,
+      "products_returned": 3,
+      "all_correct_category": true,
+      "category_violations": []
+    },
+    {
+      "test_name": "Gender Filtering with Unisex Fallback",
+      "query": "women's hoodies under 2000",
+      "passed": true,
+      "products_returned": 5,
+      "all_correct_gender": true,
+      "gender_violations": []
+    },
+    {
+      "test_name": "LLM Grounding & Citations",
+      "query": "women's cotton dresses for summer under 2000",
+      "products_recommended": 3,
+      "rationale_source": "Ollama (llama3.2:3b)",
+      "has_product_citations": true,
+      "rationale_preview": "Based on the retrieved products, I recommend the following women's cotton dresses for summer under Rs 2000:\n\nFor a bold and eye-catching look, conside...",
+      "passed": true
+    },
+    {
+      "test_name": "Vector Search Availability",
+      "vector_search_active": true,
+      "chroma_index_size": 3000,
+      "fallback_mode": false,
+      "passed": true
+    },
+    {
+      "test_name": "Metadata-Only Fallback",
+      "query": "men's leather jackets 3000 to 5000",
+      "passed": true,
+      "products_returned": 4,
+      "all_satisfy_constraints": true
+    },
+    {
+      "test_name": "Latency Benchmark",
+      "query": "black slim fit jeans under 2500",
+      "retrieval_time_seconds": 0.046,
+      "explanation_time_seconds": 20.71,
+      "total_pipeline_time_seconds": 20.756,
+      "products_returned": 1,
+      "performance_ok": true,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total_tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "pass_rate": "100.0%",
+    "overall_status": "PASS"
+  }
+}

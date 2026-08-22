@@ -1,0 +1,11 @@
+{
+    "evaluation_timestamp": "2026-08-18 16:00:27",
+    "metrics": {
+        "total_queries_tested": 20,
+        "avg_retrieval_latency_ms": 68.29,
+        "p95_retrieval_latency_ms": 233.68,
+        "hard_filter_violations": 0,
+        "hard_filter_accuracy_pct": 100.0
+    },
+    "violations": []
+}
