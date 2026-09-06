@@ -1,9 +1,12 @@
 import logging
+import re
 import requests
 from typing import List, Dict, Any, Optional
 from src.config import OLLAMA_MODEL_NAME, OLLAMA_BASE_URL, OLLAMA_TIMEOUT
 
 logger = logging.getLogger(__name__)
+
+_EXPLANATION_CACHE: Dict[str, Dict[str, Any]] = {}
 
 class RAGAgent:
     def __init__(self, model_name: Optional[str] = None, base_url: Optional[str] = None, timeout: Optional[int] = None):
@@ -12,13 +15,59 @@ class RAGAgent:
         self.timeout = timeout or OLLAMA_TIMEOUT
 
     def is_ollama_available(self) -> bool:
-        """Checks if local Ollama server is running and reachable."""
+        """Checks if local Ollama server is running and reachable with instant health check."""
         try:
-            response = requests.get(f"{self.base_url}/api/tags", timeout=(0.5, 1.0))
+            response = requests.get(f"{self.base_url}/api/tags", timeout=(0.2, 0.4))
             return response.status_code == 200
         except requests.RequestException as exc:
             logger.debug("Ollama health check failed: %s", exc)
             return False
+
+    @staticmethod
+    def _grounded_context(products: List[Dict[str, Any]]) -> tuple[str, set[str]]:
+        """Build a bounded context from retrieved products and their chunks."""
+        context_lines = []
+        allowed_ids = set()
+        for index, product in enumerate(products, 1):
+            product_id = str(product.get("product_id", "")).strip()
+            chunks = product.get("matched_chunks") or []
+            if not product_id or not chunks:
+                continue
+
+            allowed_ids.add(product_id)
+            fields = (
+                f"product_id={product_id}",
+                f"product_name={product.get('product_name', '')}",
+                f"category={product.get('category', '')}",
+                f"subcategory={product.get('subcategory', '')}",
+                f"gender={product.get('gender', '')}",
+                f"color={product.get('color', '')}",
+                f"size={product.get('size', '')}",
+                f"fit={product.get('fit', '')}",
+                f"material={product.get('material', '')}",
+                f"brand={product.get('brand', '')}",
+                f"price_inr={product.get('price_inr', '')}",
+                f"rating={product.get('rating', '')}",
+                f"season={product.get('season', '')}",
+                f"description={product.get('description', '')}",
+            )
+            evidence = "\n".join(
+                str(chunk.get("text", ""))[:1200]
+                for chunk in chunks[:3]
+                if chunk.get("text")
+            )
+            context_lines.append(
+                f"RETRIEVED PRODUCT {index}\n"
+                + " | ".join(fields)
+                + f"\nretrieved_chunk_evidence:\n{evidence}"
+            )
+
+        return "\n\n".join(context_lines)[:12000], allowed_ids
+
+    @staticmethod
+    def _contains_unknown_product_ids(response_text: str, allowed_ids: set[str]) -> bool:
+        cited_ids = set(re.findall(r"\bPRD\d+\b", response_text.upper()))
+        return bool(cited_ids - {product_id.upper() for product_id in allowed_ids})
 
     def generate_recommendation_explanation(
         self, 
@@ -37,54 +86,44 @@ class RAGAgent:
             }
 
         top_products = recommended_products[:2]
+        context_str, allowed_ids = self._grounded_context(top_products)
+        if not context_str:
+            return {
+                "source": "System",
+                "text": "No sufficiently supported recommendation was found in the retrieved product evidence.",
+            }
+
+        # Fast cache lookup for repeated queries
+        cache_key = f"{query.strip().lower()}|" + "|".join(str(p.get('product_id', '')) for p in top_products)
+        if cache_key in _EXPLANATION_CACHE:
+            return _EXPLANATION_CACHE[cache_key]
 
         # Attempt Ollama LLM call if server is available
         ollama_active = self.is_ollama_available()
         if ollama_active:
             try:
-                context_lines = []
-                for idx, p in enumerate(top_products, 1):
-                    p_name = p.get("product_name", "Clothing Item")
-                    brand = p.get("brand", "")
-                    full_name = f"{brand} {p_name}".strip() if brand and not p_name.startswith(brand) else p_name
-                    price = p.get("price_inr", 0)
-                    fit = p.get("fit", "")
-                    mat = p.get("material", "")
-                    col = p.get("color", "")
-                    cat = p.get("category", "")
-                    gen = p.get("gender", "")
-                    match_pct = p.get("match_percentage", 90)
-                    context_lines.append(
-                        f"Product {idx}: {full_name} | Price: Rs {price} | Category: {cat} | "
-                        f"Gender: {gen} | Fit: {fit} | Material: {mat} | Color: {col} | Match Score: {match_pct}%"
-                    )
-                context_str = "\n".join(context_lines)
-
                 prompt = (
-                    f"You are an AI fashion stylist.\n"
+                    "You are an AI fashion stylist producing a grounded recommendation.\n"
                     f"User Query: \"{query}\"\n\n"
-                    f"Top Products:\n{context_str}\n\n"
-                    f"INSTRUCTIONS:\n"
-                    f"For each product above, provide a short 1-2 line explanation of why it was recommended for the user's query.\n"
-                    f"Do NOT include technical details, vector explanations, or long introductions.\n"
-                    f"Use this exact format:\n\n"
-                    f"1. [Product Full Name]\n"
-                    f"[1-2 line reason why it matches the query]\n\n"
-                    f"2. [Product Full Name]\n"
-                    f"[1-2 line reason why it matches the query]"
+                    f"RETRIEVED PRODUCT EVIDENCE:\n{context_str}\n\n"
+                    "STRICT RULES:\n"
+                    "Use only the supplied retrieved product evidence. Do not invent or infer product IDs, names, prices, brands, categories, subcategories, genders, colors, sizes, fits, materials, ratings, seasons, descriptions, or availability. "
+                    "If the evidence does not sufficiently support a recommendation, say exactly that. Cite only product IDs present in the evidence. "
+                    "For each supported product, provide a short reason grounded in its evidence."
                 )
 
                 payload = {
                     "model": self.model_name,
                     "prompt": prompt,
                     "stream": False,
+                    "keep_alive": "15m",
                     "options": {
                         "temperature": 0.2,
-                        "num_predict": 180
+                        "num_predict": 80
                     }
                 }
 
-                request_timeout = min(self.timeout, 10) if self.timeout else 10
+                request_timeout = min(self.timeout, 2.5) if self.timeout else 2.5
                 resp = requests.post(
                     f"{self.base_url}/api/generate",
                     json=payload,
@@ -94,16 +133,24 @@ class RAGAgent:
                 if resp.status_code == 200:
                     result_json = resp.json()
                     response_text = result_json.get("response", "").strip()
-                    if response_text and len(response_text) > 30:
-                        return {
+                    if (
+                        response_text
+                        and len(response_text) > 30
+                        and not self._contains_unknown_product_ids(response_text, allowed_ids)
+                    ):
+                        res = {
                             "source": f"Ollama ({self.model_name})",
                             "text": response_text
                         }
+                        _EXPLANATION_CACHE[cache_key] = res
+                        return res
             except (requests.RequestException, ValueError, TypeError) as exc:
-                logger.warning("Ollama generation failed or timed out (%s). Falling back to Smart Fashion Engine.", exc)
+                logger.warning("Ollama generation timed out or unavailable (%s). Falling back to Smart Fashion Engine.", exc)
 
         # Simple deterministic fallback for top 2 items
-        return self._generate_fallback_summary(query, top_products, parsed_query)
+        res = self._generate_fallback_summary(query, top_products, parsed_query)
+        _EXPLANATION_CACHE[cache_key] = res
+        return res
 
     def _generate_fallback_summary(
         self, 

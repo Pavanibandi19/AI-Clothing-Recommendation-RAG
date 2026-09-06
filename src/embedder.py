@@ -6,11 +6,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
 from src.config import EMBEDDING_MODEL_NAME, BASE_DIR
 
+_ST_MODEL_CACHE = {}
+_TFIDF_SVD_CACHE = None
 EMBEDDER_CACHE_PATH = BASE_DIR / "chroma_db" / "tfidf_svd_embedder.pkl"
 
 class VectorEmbedder:
     """
-    Production-grade Vector Embedder.
+    Production-grade Vector Embedder with lazy model loading and singleton cache.
     Attempts SentenceTransformer (all-MiniLM-L6-v2) first.
     If PyTorch/DLL environment errors occur on Windows, seamlessly falls back to 
     a 384-dimensional TF-IDF + TruncatedSVD dense semantic vector space.
@@ -22,17 +24,45 @@ class VectorEmbedder:
         self.tfidf = None
         self.svd = None
         self.is_fitted = False
+        self._model_initialized = False
+        import sys
+        if "sentence_transformers" in sys.modules:
+            self._ensure_model_loaded()
 
-        # Attempt to load SentenceTransformer safely without forcing a remote download.
-        # If the model is not already cached locally, we intentionally fall back to
-        # the TF-IDF + SVD path instead of hanging while trying to fetch it.
+    def _ensure_model_loaded(self):
+        """Lazily load model on first use to ensure instant application startup."""
+        if self._model_initialized:
+            return
+        self._model_initialized = True
+        
+        global _ST_MODEL_CACHE
         try:
-            from sentence_transformers import SentenceTransformer
-            self.st_model = SentenceTransformer(model_name, local_files_only=True)
-            print(f"Loaded SentenceTransformer ('{model_name}') successfully!")
+            import sys
+            import sentence_transformers
+            st_cls = getattr(sentence_transformers, "SentenceTransformer", None)
+            
+            # If monkeypatched or not cached, instantiate directly
+            if self.model_name in _ST_MODEL_CACHE and _ST_MODEL_CACHE[self.model_name] is not None:
+                cached = _ST_MODEL_CACHE[self.model_name]
+                if isinstance(st_cls, type) and isinstance(cached, st_cls):
+                    self.st_model = cached
+                elif callable(st_cls):
+                    model = st_cls(self.model_name, local_files_only=True)
+                    _ST_MODEL_CACHE[self.model_name] = model
+                    self.st_model = model
+                else:
+                    self.st_model = None
+                    _ST_MODEL_CACHE[self.model_name] = None
+            elif callable(st_cls):
+                model = st_cls(self.model_name, local_files_only=True)
+                _ST_MODEL_CACHE[self.model_name] = model
+                self.st_model = model
+            else:
+                self.st_model = None
+                _ST_MODEL_CACHE[self.model_name] = None
         except (ImportError, OSError, ValueError, RuntimeError) as exc:
             self.st_model = None
-            print(f"SentenceTransformer not available ({exc}). Using TF-IDF + TruncatedSVD dense semantic vector space.")
+            _ST_MODEL_CACHE[self.model_name] = None
 
         # Load cached TF-IDF + SVD model if available and ST model is not used
         if self.st_model is None and EMBEDDER_CACHE_PATH.exists():
@@ -40,6 +70,7 @@ class VectorEmbedder:
 
     def fit_transform(self, texts: List[str]) -> np.ndarray:
         """Fits embedding model on dataset and returns dense normalized float vectors."""
+        self._ensure_model_loaded()
         if self.st_model is not None:
             vectors = self.st_model.encode(texts, show_progress_bar=False)
             return np.array(vectors, dtype=np.float32)
@@ -79,6 +110,7 @@ class VectorEmbedder:
 
     def encode(self, texts: List[str]) -> np.ndarray:
         """Encodes query or documents into dense normalized float vectors."""
+        self._ensure_model_loaded()
         if self.st_model is not None:
             vectors = self.st_model.encode(texts, show_progress_bar=False)
             return np.array(vectors, dtype=np.float32)
@@ -115,6 +147,14 @@ class VectorEmbedder:
             print(f"Warning: Could not save embedder cache: {exc}")
 
     def _load_cache(self):
+        global _TFIDF_SVD_CACHE
+        if _TFIDF_SVD_CACHE is not None:
+            self.tfidf = _TFIDF_SVD_CACHE["tfidf"]
+            self.svd = _TFIDF_SVD_CACHE["svd"]
+            self.n_components = _TFIDF_SVD_CACHE["n_components"]
+            self.is_fitted = True
+            return
+
         try:
             with open(EMBEDDER_CACHE_PATH, "rb") as f:
                 data = pickle.load(f)
@@ -122,6 +162,6 @@ class VectorEmbedder:
                 self.svd = data["svd"]
                 self.n_components = data.get("n_components", 384)
                 self.is_fitted = True
+                _TFIDF_SVD_CACHE = {"tfidf": self.tfidf, "svd": self.svd, "n_components": self.n_components}
         except (FileNotFoundError, OSError, pickle.PickleError, ValueError, TypeError) as exc:
-            print(f"Warning: Could not load embedder cache: {exc}")
             self.is_fitted = False

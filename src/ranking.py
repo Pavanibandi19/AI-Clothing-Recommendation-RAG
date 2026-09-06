@@ -5,6 +5,39 @@ class HybridRanker:
         self.semantic_weight = semantic_weight
         self.metadata_weight = metadata_weight
 
+    @staticmethod
+    def _style_matches(item: Dict[str, Any], style: str) -> bool:
+        style_terms = {
+            "formal": ("formal", "office", "tailored", "blazer"),
+            "casual": ("casual", "everyday", "resort", "relaxed"),
+            "party": ("party", "evening", "festive"),
+            "summer": ("summer", "sun", "beach"),
+            "office": ("office", "formal", "tailored", "blazer"),
+            "festive": ("festive", "ethnic", "evening"),
+        }
+        terms = style_terms.get(str(style).lower(), (str(style).lower(),))
+        searchable_text = " ".join(
+            str(item.get(field, ""))
+            for field in ("product_name", "subcategory", "description", "season")
+        ).lower()
+        return any(term in searchable_text for term in terms)
+
+    @staticmethod
+    def _semantic_style(parsed_query: Dict[str, Any]) -> str:
+        intent_style = {
+            "formal wear": "formal",
+            "office wear": "office",
+            "casual wear": "casual",
+            "party wear": "party",
+            "occasion wear": "festive",
+            "summer clothing": "summer",
+            "sportswear": "sports",
+        }
+        return intent_style.get(
+            str(parsed_query.get("intent", "")).lower(),
+            str(parsed_query.get("style", "")).lower(),
+        )
+
     def calculate_hybrid_score(
         self, 
         item: Dict[str, Any], 
@@ -52,6 +85,16 @@ class HybridRanker:
             if item_season == query_season or item_season == "all-season":
                 metadata_score += 0.10
 
+        # Style and occasion terms are semantic preferences, not hard filters.
+        # Check all descriptive catalog fields because the dataset expresses
+        # style in names, subcategories, and descriptions rather than a style
+        # column.
+        if parsed_query.get("style"):
+            max_possible_meta += 0.20
+            style_term = self._semantic_style(parsed_query)
+            if self._style_matches(item, style_term):
+                metadata_score += 0.20
+
         # Normalize metadata boost score
         if max_possible_meta > 0:
             norm_metadata_score = metadata_score / max_possible_meta
@@ -72,25 +115,56 @@ class HybridRanker:
         distances: List[float], 
         parsed_query: Dict[str, Any], 
         similarity_threshold: float = 0.20,
-        top_k: int = 4
+        top_k: int = 4,
+        allow_unretrieved: bool = True,
     ) -> List[Dict[str, Any]]:
         """
         Ranks candidate products based on hybrid score and filters out items below similarity threshold.
         """
         ranked_results = []
 
+        semantic_intent = self._semantic_style(parsed_query)
+        has_style_evidence = any(
+            dist is not None and self._style_matches(item, semantic_intent)
+            for item, dist in zip(candidates, distances)
+        )
+
         for item, dist in zip(candidates, distances):
+            has_evidence = dist is not None
+            if not has_evidence and not allow_unretrieved:
+                continue
+
+            # A broad query with an explicit occasion/style should not return
+            # arbitrary gender-matching products when the catalog has no
+            # evidence for that style. This remains a semantic reranking gate,
+            # not a metadata category filter.
+            if (
+                parsed_query.get("intent")
+                and parsed_query["intent"] not in {"broad clothing", "budget clothing"}
+                and has_style_evidence
+                and not self._style_matches(item, semantic_intent)
+            ):
+                continue
+
             # ChromaDB cosine distance range: 0.0 (identical) to 2.0 (opposite)
             # Convert cosine distance to cosine similarity: sim = 1 - (dist / 2) or 1 - dist
             # For normalized embeddings: cosine_similarity = 1.0 - (cosine_distance)
-            semantic_sim = max(0.0, 1.0 - float(dist))
+            semantic_sim = max(0.0, 1.0 - float(dist)) if has_evidence else 0.0
 
             hybrid_score = self.calculate_hybrid_score(item, semantic_sim, parsed_query)
 
             # Apply similarity threshold cutoff
-            if hybrid_score >= float(similarity_threshold):
+            occasion_fallback = (
+                has_evidence
+                and not has_style_evidence
+                and parsed_query.get("intent")
+                not in {None, "broad clothing", "budget clothing"}
+                and semantic_sim > 0.0
+            )
+            if hybrid_score >= float(similarity_threshold) or occasion_fallback:
                 item_copy = item.copy()
                 item_copy["semantic_similarity"] = round(semantic_sim, 4)
+                item_copy["has_retrieved_evidence"] = has_evidence
                 item_copy["hybrid_score"] = hybrid_score
                 item_copy["match_percentage"] = int(hybrid_score * 100)
                 ranked_results.append(item_copy)

@@ -17,8 +17,13 @@ OLLAMA_TIMEOUT = int(os.getenv("OLLAMA_TIMEOUT", "5"))
 
 # Vector Database & Embedding Settings
 CHROMA_PERSIST_DIRECTORY = os.getenv("CHROMA_PERSIST_DIRECTORY", str(BASE_DIR / "chroma_db"))
+CHROMA_COLLECTION_NAME = os.getenv("CHROMA_COLLECTION_NAME", "recomai_product_chunks")
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "all-MiniLM-L6-v2")
 DATASET_PATH = os.getenv("DATASET_PATH", str(BASE_DIR / "data" / "clothing_products.csv"))
+
+# Chunking Settings
+CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "400"))
+CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "50"))
 
 # Retrieval Settings
 DEFAULT_TOP_K = int(os.getenv("DEFAULT_TOP_K", "4"))
@@ -40,7 +45,7 @@ VALID_MATERIALS = ["Cotton", "Denim", "Polyester", "Linen", "Wool", "Silk", "Ray
 VALID_COLORS = [
     "Black", "Blue", "White", "Red", "Green", 
     "Navy", "Grey", "Beige", "Yellow", "Pink", 
-    "Olive", "Maroon", "Brown", "Purple"
+    "Olive", "Maroon", "Brown", "Purple", "Orange"
 ]
 
 VALID_SEASONS = ["Summer", "Winter", "Spring", "Autumn", "All-Season"]

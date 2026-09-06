@@ -1,4 +1,7 @@
-# 🧥 AI Clothing Recommendation System - Test Report & Quality Analysis
+# AI Clothing Recommendation System - Historical Test Report
+
+> This file records an earlier test run and is not the current source of truth.
+> Use `pytest tests/` and `python quick_evaluate.py` against the current checkout.
 
 **Date**: 2026-08-19  
 **Project**: AI Clothing Product Recommendation System (RAG-based)  

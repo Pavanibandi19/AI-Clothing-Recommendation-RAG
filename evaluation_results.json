@@ -1,77 +1,62 @@
 {
-  "timestamp": 1787371131.9883747,
+  "timestamp": 1788695023.1810994,
   "test_cases": [
     {
-      "test_name": "Budget Constraint Enforcement",
-      "query": "jeans under 2000",
+      "test": "Budget Constraint",
       "passed": true,
-      "products_returned": 10,
-      "budget_violations": [],
-      "max_price_in_results": 1999
+      "details": "10 items returned, max price: 1999"
     },
     {
-      "test_name": "No-Match Handling",
-      "query": "jackets under 100",
+      "test": "No-Match Handling",
       "passed": true,
-      "returns_empty": true,
-      "message": "No matching products were found satisfying your specific budget or category requirements.",
-      "graceful_error": true
+      "details": "Returns empty: True, Message: No matching products were found satisfying your specific budget or category requirements."
     },
     {
-      "test_name": "Category Filtering Accuracy",
-      "query": "blue t-shirts under 1000",
+      "test": "Hallucination Guard (Out-of-Catalog)",
       "passed": true,
-      "products_returned": 3,
-      "all_correct_category": true,
-      "category_violations": []
+      "details": "Correctly returned 0 items for impossible out-of-catalog query: True"
     },
     {
-      "test_name": "Gender Filtering with Unisex Fallback",
-      "query": "women's hoodies under 2000",
+      "test": "Category Filtering",
       "passed": true,
-      "products_returned": 5,
-      "all_correct_gender": true,
-      "gender_violations": []
+      "details": "3 items, all correct category: True"
     },
     {
-      "test_name": "LLM Grounding & Citations",
-      "query": "women's cotton dresses for summer under 2000",
-      "products_recommended": 3,
-      "rationale_source": "Ollama (llama3.2:3b)",
-      "has_product_citations": true,
-      "rationale_preview": "Based on the retrieved products, I recommend the following women's cotton dresses for summer under Rs 2000:\n\nFor a bold and eye-catching look, conside...",
-      "passed": true
-    },
-    {
-      "test_name": "Vector Search Availability",
-      "vector_search_active": true,
-      "chroma_index_size": 3000,
-      "fallback_mode": false,
-      "passed": true
-    },
-    {
-      "test_name": "Metadata-Only Fallback",
-      "query": "men's leather jackets 3000 to 5000",
+      "test": "Gender Filtering",
       "passed": true,
-      "products_returned": 4,
-      "all_satisfy_constraints": true
+      "details": "5 items, all correct gender: True"
     },
     {
-      "test_name": "Latency Benchmark",
-      "query": "black slim fit jeans under 2500",
-      "retrieval_time_seconds": 0.046,
-      "explanation_time_seconds": 20.71,
-      "total_pipeline_time_seconds": 20.756,
-      "products_returned": 1,
-      "performance_ok": true,
-      "passed": true
+      "test": "Vector Search Availability",
+      "passed": true,
+      "details": "ChromaDB Active: True, Indexed Chunks: 9000"
+    },
+    {
+      "test": "Price Range & Category (Above 2000)",
+      "passed": true,
+      "details": "1 items returned, all prices >= 2000: True"
+    },
+    {
+      "test": "Broad Budget Query (under 1000)",
+      "passed": true,
+      "details": "4 items returned, all <= 1000: True"
+    },
+    {
+      "test": "Chunk Retrieval & Deduplication",
+      "passed": true,
+      "details": "100 chunks retrieved -> 1 unique products returned (0 duplicates)"
+    },
+    {
+      "test": "Retrieval Latency",
+      "passed": true,
+      "details": "Completed in 0.0684s (68.4ms) (target: < 2s), 0 items"
     }
   ],
   "summary": {
-    "total_tests": 8,
-    "passed": 8,
+    "total": 10,
+    "passed": 10,
     "failed": 0,
-    "pass_rate": "100.0%",
-    "overall_status": "PASS"
+    "pass_rate": "100%",
+    "status": "PASS"
   }
 }

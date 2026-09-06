@@ -1,0 +1,1070 @@
+{
+  "retrieval": {
+    "blue slim fit jeans under 2000": {
+      "count": 1,
+      "items": [
+        {
+          "product_id": "PRD1506",
+          "name": "Allen Solly Women's Blue Slim Fit Straight Leg Jeans",
+          "brand": "Allen Solly",
+          "price": 1499,
+          "category": "jeans",
+          "gender": "Women",
+          "color": "Blue",
+          "fit": "Slim Fit",
+          "material": "Denim",
+          "similarity": 0.6306,
+          "hybrid_score": 0.7599
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "blue slim fit jeans under 2000",
+        "max_price": 2000.0,
+        "min_price": null,
+        "gender": null,
+        "category": "jeans",
+        "subcategory": null,
+        "color": "Blue",
+        "fit": "Slim Fit",
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "blue slim fit jeans"
+      },
+      "latency_ms": 4909.43,
+      "message": "Success"
+    },
+    "black casual t-shirts below 1500": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD1336",
+          "name": "H&M Men's Black Regular Fit Oversized Cotton Tee",
+          "brand": "H&M",
+          "price": 1349,
+          "category": "t-shirts",
+          "gender": "Men",
+          "color": "Black",
+          "fit": "Regular Fit",
+          "material": "Cotton",
+          "similarity": 0.546,
+          "hybrid_score": 0.7449
+        },
+        {
+          "product_id": "PRD1405",
+          "name": "US Polo Assn Women's Black Slim Fit Oversized Cotton Tee",
+          "brand": "US Polo Assn",
+          "price": 1199,
+          "category": "t-shirts",
+          "gender": "Women",
+          "color": "Black",
+          "fit": "Slim Fit",
+          "material": "Cotton",
+          "similarity": 0.5456,
+          "hybrid_score": 0.7446
+        },
+        {
+          "product_id": "PRD1454",
+          "name": "Tommy Hilfiger Men's Black Regular Fit V-Neck Casual T-Shirt",
+          "brand": "Tommy Hilfiger",
+          "price": 1049,
+          "category": "t-shirts",
+          "gender": "Men",
+          "color": "Black",
+          "fit": "Regular Fit",
+          "material": "Cotton",
+          "similarity": 0.5394,
+          "hybrid_score": 0.7439
+        },
+        {
+          "product_id": "PRD1352",
+          "name": "H&M Women's Black Regular Fit Oversized Cotton Tee",
+          "brand": "H&M",
+          "price": 1199,
+          "category": "t-shirts",
+          "gender": "Women",
+          "color": "Black",
+          "fit": "Regular Fit",
+          "material": "Cotton",
+          "similarity": 0.5352,
+          "hybrid_score": 0.7112
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "black casual t-shirts below 1500",
+        "max_price": 1500.0,
+        "min_price": null,
+        "gender": null,
+        "category": "t-shirts",
+        "subcategory": null,
+        "color": "Black",
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": "casual",
+        "cleaned_query": "black casual t-shirts"
+      },
+      "latency_ms": 52.17,
+      "message": "Success"
+    },
+    "women's cotton dresses for summer": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD1992",
+          "name": "W Women's Red Regular Fit A-Line Cotton Dress",
+          "brand": "W",
+          "price": 3099,
+          "category": "dresses",
+          "gender": "Women",
+          "color": "Red",
+          "fit": "Regular Fit",
+          "material": "Cotton",
+          "similarity": 0.6203,
+          "hybrid_score": 0.7899
+        },
+        {
+          "product_id": "PRD2045",
+          "name": "Adidas Women's Pink Regular Fit Floral Summer Maxi Dress",
+          "brand": "Adidas",
+          "price": 1749,
+          "category": "dresses",
+          "gender": "Women",
+          "color": "Pink",
+          "fit": "Regular Fit",
+          "material": "Cotton",
+          "similarity": 0.6017,
+          "hybrid_score": 0.7878
+        },
+        {
+          "product_id": "PRD2108",
+          "name": "H&M Women's Black Slim Fit Floral Summer Maxi Dress",
+          "brand": "H&M",
+          "price": 3299,
+          "category": "dresses",
+          "gender": "Women",
+          "color": "Black",
+          "fit": "Slim Fit",
+          "material": "Cotton",
+          "similarity": 0.5907,
+          "hybrid_score": 0.7739
+        },
+        {
+          "product_id": "PRD2037",
+          "name": "W Women's Red Slim Fit A-Line Cotton Dress",
+          "brand": "W",
+          "price": 1999,
+          "category": "dresses",
+          "gender": "Women",
+          "color": "Red",
+          "fit": "Slim Fit",
+          "material": "Cotton",
+          "similarity": 0.5928,
+          "hybrid_score": 0.772
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "women's cotton dresses for summer",
+        "max_price": null,
+        "min_price": null,
+        "gender": "Women",
+        "category": "dresses",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": "Cotton",
+        "season": "Summer",
+        "style": null,
+        "cleaned_query": "women's cotton dresses summer"
+      },
+      "latency_ms": 30.03,
+      "message": "Success"
+    },
+    "men's oversized hoodies under 2500": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD2755",
+          "name": "Levi's Men's Maroon Oversized Heavyweight Warm Hoodie",
+          "brand": "Levi's",
+          "price": 1349,
+          "category": "hoodies",
+          "gender": "Men",
+          "color": "Maroon",
+          "fit": "Oversized",
+          "material": "Wool",
+          "similarity": 0.6221,
+          "hybrid_score": 0.8043
+        },
+        {
+          "product_id": "PRD2680",
+          "name": "Under Armour Men's Blue Oversized Graphic Print Hoodie",
+          "brand": "Under Armour",
+          "price": 2199,
+          "category": "hoodies",
+          "gender": "Men",
+          "color": "Blue",
+          "fit": "Oversized",
+          "material": "Cotton",
+          "similarity": 0.6264,
+          "hybrid_score": 0.7972
+        },
+        {
+          "product_id": "PRD2644",
+          "name": "FabIndia Men's Yellow Oversized Graphic Print Hoodie",
+          "brand": "FabIndia",
+          "price": 1549,
+          "category": "hoodies",
+          "gender": "Men",
+          "color": "Yellow",
+          "fit": "Oversized",
+          "material": "Wool",
+          "similarity": 0.5944,
+          "hybrid_score": 0.7864
+        },
+        {
+          "product_id": "PRD2792",
+          "name": "US Polo Assn Men's Navy Oversized Graphic Print Hoodie",
+          "brand": "US Polo Assn",
+          "price": 1899,
+          "category": "hoodies",
+          "gender": "Men",
+          "color": "Navy",
+          "fit": "Oversized",
+          "material": "Cotton",
+          "similarity": 0.6096,
+          "hybrid_score": 0.7629
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "men's oversized hoodies under 2500",
+        "max_price": 2500.0,
+        "min_price": null,
+        "gender": "Men",
+        "category": "hoodies",
+        "subcategory": null,
+        "color": null,
+        "fit": "Oversized",
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "men's oversized hoodies"
+      },
+      "latency_ms": 61.21,
+      "message": "Success"
+    },
+    "formal linen shirts above 2000": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD1137",
+          "name": "FabIndia Women's Yellow Relaxed Fit Formal Dress Shirt",
+          "brand": "FabIndia",
+          "price": 3499,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Yellow",
+          "fit": "Relaxed Fit",
+          "material": "Linen",
+          "similarity": 0.5231,
+          "hybrid_score": 0.73
+        },
+        {
+          "product_id": "PRD1175",
+          "name": "H&M Women's Yellow Relaxed Fit Checked Flannel Shirt",
+          "brand": "H&M",
+          "price": 3249,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Yellow",
+          "fit": "Relaxed Fit",
+          "material": "Linen",
+          "similarity": 0.5226,
+          "hybrid_score": 0.723
+        },
+        {
+          "product_id": "PRD1017",
+          "name": "HRX Unisex's Brown Relaxed Fit Formal Dress Shirt",
+          "brand": "HRX",
+          "price": 2399,
+          "category": "shirts",
+          "gender": "Unisex",
+          "color": "Brown",
+          "fit": "Relaxed Fit",
+          "material": "Linen",
+          "similarity": 0.0,
+          "hybrid_score": 0.4
+        },
+        {
+          "product_id": "PRD1147",
+          "name": "Jack & Jones Women's Maroon Slim Fit Casual Button-Down",
+          "brand": "Jack & Jones",
+          "price": 2549,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Maroon",
+          "fit": "Slim Fit",
+          "material": "Linen",
+          "similarity": 0.0,
+          "hybrid_score": 0.4
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "formal linen shirts above 2000",
+        "max_price": null,
+        "min_price": 2000.0,
+        "gender": null,
+        "category": "shirts",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": "Linen",
+        "season": null,
+        "style": "formal",
+        "cleaned_query": "formal linen shirts"
+      },
+      "latency_ms": 51.54,
+      "message": "Success"
+    },
+    "running shoes under 3000": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD3819",
+          "name": "Adidas Men's Purple Regular Fit Athletic Track Pants",
+          "brand": "Adidas",
+          "price": 2999,
+          "category": "activewear",
+          "gender": "Men",
+          "color": "Purple",
+          "fit": "Regular Fit",
+          "material": "Rayon",
+          "similarity": 0.4011,
+          "hybrid_score": 0.4857
+        },
+        {
+          "product_id": "PRD3319",
+          "name": "Nike Men's Black Regular Fit Athletic Running Shorts",
+          "brand": "Nike",
+          "price": 1249,
+          "category": "shorts",
+          "gender": "Men",
+          "color": "Black",
+          "fit": "Regular Fit",
+          "material": "Denim",
+          "similarity": 0.4549,
+          "hybrid_score": 0.484
+        },
+        {
+          "product_id": "PRD3909",
+          "name": "Under Armour Women's Yellow Skinny Fit Running Shorts with Liner",
+          "brand": "Under Armour",
+          "price": 1599,
+          "category": "activewear",
+          "gender": "Women",
+          "color": "Yellow",
+          "fit": "Skinny Fit",
+          "material": "Polyester",
+          "similarity": 0.403,
+          "hybrid_score": 0.4836
+        },
+        {
+          "product_id": "PRD3426",
+          "name": "Under Armour Women's White Relaxed Fit Athletic Running Shorts",
+          "brand": "Under Armour",
+          "price": 1899,
+          "category": "shorts",
+          "gender": "Women",
+          "color": "White",
+          "fit": "Relaxed Fit",
+          "material": "Linen",
+          "similarity": 0.4231,
+          "hybrid_score": 0.48
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "running shoes under 3000",
+        "max_price": 3000.0,
+        "min_price": null,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "running shoes"
+      },
+      "latency_ms": 223.04,
+      "message": "Success"
+    },
+    "winter jackets for men": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD2475",
+          "name": "FabIndia Men's White Regular Fit Puffer Winter Jacket",
+          "brand": "FabIndia",
+          "price": 4149,
+          "category": "jackets",
+          "gender": "Men",
+          "color": "White",
+          "fit": "Regular Fit",
+          "material": "Polyester",
+          "similarity": 0.627,
+          "hybrid_score": 0.7909
+        },
+        {
+          "product_id": "PRD2474",
+          "name": "Allen Solly Men's Yellow Oversized Puffer Winter Jacket",
+          "brand": "Allen Solly",
+          "price": 4949,
+          "category": "jackets",
+          "gender": "Men",
+          "color": "Yellow",
+          "fit": "Oversized",
+          "material": "Leather",
+          "similarity": 0.6149,
+          "hybrid_score": 0.7863
+        },
+        {
+          "product_id": "PRD2526",
+          "name": "W Men's Purple Oversized Puffer Winter Jacket",
+          "brand": "W",
+          "price": 3749,
+          "category": "jackets",
+          "gender": "Men",
+          "color": "Purple",
+          "fit": "Oversized",
+          "material": "Wool",
+          "similarity": 0.6358,
+          "hybrid_score": 0.7799
+        },
+        {
+          "product_id": "PRD2416",
+          "name": "W Men's Beige Oversized Windbreaker Jacket",
+          "brand": "W",
+          "price": 5399,
+          "category": "jackets",
+          "gender": "Men",
+          "color": "Beige",
+          "fit": "Oversized",
+          "material": "Leather",
+          "similarity": 0.5843,
+          "hybrid_score": 0.7698
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "winter jackets for men",
+        "max_price": null,
+        "min_price": null,
+        "gender": "Men",
+        "category": "jackets",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": "Winter",
+        "style": null,
+        "cleaned_query": "winter jackets men"
+      },
+      "latency_ms": 54.09,
+      "message": "Success"
+    },
+    "cotton shirts for women": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD1002",
+          "name": "H&M Women's Black Slim Fit Oxford Cotton Shirt",
+          "brand": "H&M",
+          "price": 2849,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Black",
+          "fit": "Slim Fit",
+          "material": "Cotton",
+          "similarity": 0.673,
+          "hybrid_score": 0.8174
+        },
+        {
+          "product_id": "PRD1063",
+          "name": "Under Armour Women's Maroon Slim Fit Checked Flannel Shirt",
+          "brand": "Under Armour",
+          "price": 1199,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Maroon",
+          "fit": "Slim Fit",
+          "material": "Cotton",
+          "similarity": 0.6304,
+          "hybrid_score": 0.7931
+        },
+        {
+          "product_id": "PRD1015",
+          "name": "Levi's Women's Beige Slim Fit Oxford Cotton Shirt",
+          "brand": "Levi's",
+          "price": 1749,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Beige",
+          "fit": "Slim Fit",
+          "material": "Cotton",
+          "similarity": 0.6605,
+          "hybrid_score": 0.7826
+        },
+        {
+          "product_id": "PRD1023",
+          "name": "HRX Women's Beige Slim Fit Formal Dress Shirt",
+          "brand": "HRX",
+          "price": 1199,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Beige",
+          "fit": "Slim Fit",
+          "material": "Cotton",
+          "similarity": 0.6461,
+          "hybrid_score": 0.7733
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "cotton shirts for women",
+        "max_price": null,
+        "min_price": null,
+        "gender": "Women",
+        "category": "shirts",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": "Cotton",
+        "season": null,
+        "style": null,
+        "cleaned_query": "cotton shirts women"
+      },
+      "latency_ms": 39.5,
+      "message": "Success"
+    },
+    "shirts from Nike": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD1104",
+          "name": "Nike Women's Pink Regular Fit Formal Dress Shirt",
+          "brand": "Nike",
+          "price": 849,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Pink",
+          "fit": "Regular Fit",
+          "material": "Rayon",
+          "similarity": 0.645,
+          "hybrid_score": 0.8193
+        },
+        {
+          "product_id": "PRD1229",
+          "name": "Nike Unisex's Grey Relaxed Fit Formal Dress Shirt",
+          "brand": "Nike",
+          "price": 799,
+          "category": "shirts",
+          "gender": "Unisex",
+          "color": "Grey",
+          "fit": "Relaxed Fit",
+          "material": "Linen",
+          "similarity": 0.6547,
+          "hybrid_score": 0.8122
+        },
+        {
+          "product_id": "PRD1142",
+          "name": "Nike Women's Red Slim Fit Formal Dress Shirt",
+          "brand": "Nike",
+          "price": 1499,
+          "category": "shirts",
+          "gender": "Women",
+          "color": "Red",
+          "fit": "Slim Fit",
+          "material": "Linen",
+          "similarity": 0.6369,
+          "hybrid_score": 0.8106
+        },
+        {
+          "product_id": "PRD1075",
+          "name": "Nike Unisex's Green Regular Fit Casual Button-Down",
+          "brand": "Nike",
+          "price": 1549,
+          "category": "shirts",
+          "gender": "Unisex",
+          "color": "Green",
+          "fit": "Regular Fit",
+          "material": "Polyester",
+          "similarity": 0.6347,
+          "hybrid_score": 0.8092
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "shirts from Nike",
+        "max_price": null,
+        "min_price": null,
+        "gender": null,
+        "category": "shirts",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "shirts from nike"
+      },
+      "latency_ms": 56.85,
+      "message": "Success"
+    },
+    "between 2000 and 5000": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD3924",
+          "name": "Roadster Women's Blue Regular Fit Performance Training Vest",
+          "brand": "Roadster",
+          "price": 2149,
+          "category": "activewear",
+          "gender": "Women",
+          "color": "Blue",
+          "fit": "Regular Fit",
+          "material": "Rayon",
+          "similarity": 0.2244,
+          "hybrid_score": 0.3542
+        },
+        {
+          "product_id": "PRD3688",
+          "name": "Adidas Men's Blue Regular Fit Festive Nehru Jacket",
+          "brand": "Adidas",
+          "price": 4549,
+          "category": "ethnic wear",
+          "gender": "Men",
+          "color": "Blue",
+          "fit": "Regular Fit",
+          "material": "Rayon",
+          "similarity": 0.2078,
+          "hybrid_score": 0.3534
+        },
+        {
+          "product_id": "PRD3758",
+          "name": "W Men's White Regular Fit Anarkali Kurta Set",
+          "brand": "W",
+          "price": 2699,
+          "category": "ethnic wear",
+          "gender": "Men",
+          "color": "White",
+          "fit": "Regular Fit",
+          "material": "Cotton",
+          "similarity": 0.2048,
+          "hybrid_score": 0.3481
+        },
+        {
+          "product_id": "PRD3741",
+          "name": "Roadster Women's Yellow Regular Fit Anarkali Kurta Set",
+          "brand": "Roadster",
+          "price": 4749,
+          "category": "ethnic wear",
+          "gender": "Women",
+          "color": "Yellow",
+          "fit": "Regular Fit",
+          "material": "Silk",
+          "similarity": 0.1981,
+          "hybrid_score": 0.3471
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "between 2000 and 5000",
+        "max_price": 5000.0,
+        "min_price": 2000.0,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "between and"
+      },
+      "latency_ms": 188.25,
+      "message": "Success"
+    },
+    "below \u20b91500": {
+      "count": 4,
+      "items": [
+        {
+          "product_id": "PRD2670",
+          "name": "Mango Women's White Oversized Graphic Print Hoodie",
+          "brand": "Mango",
+          "price": 1249,
+          "category": "hoodies",
+          "gender": "Women",
+          "color": "White",
+          "fit": "Oversized",
+          "material": "Cotton",
+          "similarity": 0.2803,
+          "hybrid_score": 0.3972
+        },
+        {
+          "product_id": "PRD3576",
+          "name": "Under Armour Men's Blue Regular Fit Festive Nehru Jacket",
+          "brand": "Under Armour",
+          "price": 1099,
+          "category": "ethnic wear",
+          "gender": "Men",
+          "color": "Blue",
+          "fit": "Regular Fit",
+          "material": "Rayon",
+          "similarity": 0.2624,
+          "hybrid_score": 0.3756
+        },
+        {
+          "product_id": "PRD1522",
+          "name": "Aurelia Men's Green Relaxed Fit High-Waist Mom Jeans",
+          "brand": "Aurelia",
+          "price": 1499,
+          "category": "jeans",
+          "gender": "Men",
+          "color": "Green",
+          "fit": "Relaxed Fit",
+          "material": "Cotton",
+          "similarity": 0.2319,
+          "hybrid_score": 0.3691
+        },
+        {
+          "product_id": "PRD3739",
+          "name": "H&M Men's Pink Relaxed Fit Festive Nehru Jacket",
+          "brand": "H&M",
+          "price": 1399,
+          "category": "ethnic wear",
+          "gender": "Men",
+          "color": "Pink",
+          "fit": "Relaxed Fit",
+          "material": "Cotton",
+          "similarity": 0.2258,
+          "hybrid_score": 0.3684
+        }
+      ],
+      "parsed_query": {
+        "raw_query": "below \u20b91500",
+        "max_price": 1500.0,
+        "min_price": null,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "\u20b91500"
+      },
+      "latency_ms": 102.16,
+      "message": "Success"
+    }
+  },
+  "query_parsing": {
+    "under 2000": {
+      "parsed": {
+        "raw_query": "under 2000",
+        "max_price": 2000.0,
+        "min_price": null,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "under 2000"
+      },
+      "is_clothing_query": false
+    },
+    "below \u20b91500": {
+      "parsed": {
+        "raw_query": "below \u20b91500",
+        "max_price": 1500.0,
+        "min_price": null,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "\u20b91500"
+      },
+      "is_clothing_query": false
+    },
+    "above 2000": {
+      "parsed": {
+        "raw_query": "above 2000",
+        "max_price": null,
+        "min_price": 2000.0,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "above 2000"
+      },
+      "is_clothing_query": false
+    },
+    "between 2000 and 5000": {
+      "parsed": {
+        "raw_query": "between 2000 and 5000",
+        "max_price": 5000.0,
+        "min_price": 2000.0,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "between and"
+      },
+      "is_clothing_query": false
+    },
+    "less than 3500.50": {
+      "parsed": {
+        "raw_query": "less than 3500.50",
+        "max_price": 3500.5,
+        "min_price": null,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "less than 3500.50"
+      },
+      "is_clothing_query": false
+    },
+    "blue cotton shirt for girls": {
+      "parsed": {
+        "raw_query": "blue cotton shirt for girls",
+        "max_price": null,
+        "min_price": null,
+        "gender": "Women",
+        "category": "shirts",
+        "subcategory": null,
+        "color": "Blue",
+        "fit": null,
+        "material": "Cotton",
+        "season": null,
+        "style": null,
+        "cleaned_query": "blue cotton shirt girls"
+      },
+      "is_clothing_query": true
+    },
+    "oversized hoodies for boys": {
+      "parsed": {
+        "raw_query": "oversized hoodies for boys",
+        "max_price": null,
+        "min_price": null,
+        "gender": "Men",
+        "category": "hoodies",
+        "subcategory": null,
+        "color": null,
+        "fit": "Oversized",
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "oversized hoodies boys"
+      },
+      "is_clothing_query": true
+    },
+    "unisex winter jackets": {
+      "parsed": {
+        "raw_query": "unisex winter jackets",
+        "max_price": null,
+        "min_price": null,
+        "gender": "Unisex",
+        "category": "jackets",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": "Winter",
+        "style": null,
+        "cleaned_query": "unisex winter jackets"
+      },
+      "is_clothing_query": true
+    },
+    "party wear dresses": {
+      "parsed": {
+        "raw_query": "party wear dresses",
+        "max_price": null,
+        "min_price": null,
+        "gender": null,
+        "category": "dresses",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": "party",
+        "cleaned_query": "party wear dresses"
+      },
+      "is_clothing_query": true
+    },
+    "running shoes": {
+      "parsed": {
+        "raw_query": "running shoes",
+        "max_price": null,
+        "min_price": null,
+        "gender": null,
+        "category": null,
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "running shoes"
+      },
+      "is_clothing_query": false
+    },
+    "cotton shirts under \u20b92,000": {
+      "parsed": {
+        "raw_query": "cotton shirts under \u20b92,000",
+        "max_price": 2000.0,
+        "min_price": null,
+        "gender": null,
+        "category": "shirts",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": "Cotton",
+        "season": null,
+        "style": null,
+        "cleaned_query": "cotton shirts \u20b92,000"
+      },
+      "is_clothing_query": true
+    },
+    "maxi dresses below rs. 3000": {
+      "parsed": {
+        "raw_query": "maxi dresses below rs. 3000",
+        "max_price": 3000.0,
+        "min_price": null,
+        "gender": null,
+        "category": "dresses",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": "maxi",
+        "cleaned_query": "maxi dresses rs."
+      },
+      "is_clothing_query": true
+    },
+    "shirts with 0 price": {
+      "parsed": {
+        "raw_query": "shirts with 0 price",
+        "max_price": null,
+        "min_price": null,
+        "gender": null,
+        "category": "shirts",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "shirts price"
+      },
+      "is_clothing_query": true
+    },
+    "jackets under -500": {
+      "parsed": {
+        "raw_query": "jackets under -500",
+        "max_price": null,
+        "min_price": null,
+        "gender": null,
+        "category": "jackets",
+        "subcategory": null,
+        "color": null,
+        "fit": null,
+        "material": null,
+        "season": null,
+        "style": null,
+        "cleaned_query": "jackets -500"
+      },
+      "is_clothing_query": true
+    }
+  },
+  "error_tests": {
+    "": {
+      "status": "PASS",
+      "is_clothing_query": false,
+      "count": 4,
+      "message": "Success"
+    },
+    "   ": {
+      "status": "PASS",
+      "is_clothing_query": false,
+      "count": 4,
+      "message": "Success"
+    },
+    "xyz random gibberish 123": {
+      "status": "PASS",
+      "is_clothing_query": false,
+      "count": 4,
+      "message": "Success"
+    },
+    "unsupported spacecraft rocket": {
+      "status": "PASS",
+      "is_clothing_query": false,
+      "count": 4,
+      "message": "Success"
+    },
+    "shoes with price 0": {
+      "status": "PASS",
+      "is_clothing_query": false,
+      "count": 4,
+      "message": "Success"
+    },
+    "jackets under -100": {
+      "status": "PASS",
+      "is_clothing_query": true,
+      "count": 4,
+      "message": "Success"
+    },
+    "jackets under 999999999": {
+      "status": "PASS",
+      "is_clothing_query": true,
+      "count": 4,
+      "message": "Success"
+    },
+    "dresses with \u20ac$%^&*()!~`": {
+      "status": "PASS",
+      "is_clothing_query": true,
+      "count": 4,
+      "message": "Success"
+    },
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
+      "status": "PASS",
+      "is_clothing_query": false,
+      "count": 4,
+      "message": "Success"
+    },
+    "jackets under 10": {
+      "status": "PASS",
+      "is_clothing_query": true,
+      "count": 0,
+      "message": "No matching products were found satisfying your specific budget or category requirements."
+    }
+  }
+}

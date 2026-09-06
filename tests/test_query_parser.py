@@ -25,6 +25,95 @@ def test_parse_womens_cotton_dresses(parser):
     assert res["category"] == "dresses"
     assert res["season"] == "Summer"
 
+def test_dress_shirt_phrases_use_shirts_category(parser):
+    for query in ("men's dress shirts", "formal dress shirt for men"):
+        res = parser.parse(query)
+        assert res["category"] == "shirts"
+
+def test_mens_formal_dress_is_semantic_style_not_dresses_category(parser):
+    res = parser.parse("yellow formal dress for men")
+    assert res["gender"] == "Men"
+    assert res["color"] == "Yellow"
+    assert res["style"] == "formal"
+    assert res["category"] is None
+    assert res["intent"] == "formal wear"
+
+@pytest.mark.parametrize("query", [
+    "dress for men",
+    "show me a dress for men",
+    "men's dress",
+    "formal dress for men",
+    "casual dress for men",
+    "party dress for men",
+])
+def test_mens_dress_outfit_language_is_soft_intent(parser, query):
+    result = parser.parse(query)
+    assert result["gender"] == "Men"
+    assert result["category"] is None
+    assert result["intent"] in ("broad clothing", "formal wear", "casual wear", "party wear")
+
+@pytest.mark.parametrize("color", [
+    "red", "blue", "yellow", "green", "black", "white", "pink",
+    "orange", "purple", "brown", "grey", "gray", "navy", "maroon",
+])
+def test_formal_dress_context_never_uses_color_as_dress_category(parser, color):
+    result = parser.parse(f"suggest me a {color} formal dress for men under 3000")
+    assert result["gender"] == "Men"
+    assert result["category"] is None
+    assert result["style"] == "formal"
+    assert result["max_price"] == 3000.0
+    assert result["color"] == ("Grey" if color == "gray" else color.title())
+
+def test_formal_shirt_and_explicit_womens_dresses_remain_categories(parser):
+    assert parser.parse("yellow formal shirt for men")["category"] == "shirts"
+    assert parser.parse("women's dresses")["category"] == "dresses"
+    assert parser.parse("women's dress")["category"] == "dresses"
+    assert parser.parse("women's cotton dress")["category"] == "dresses"
+
+@pytest.mark.parametrize("query", [
+    "can you recommend something blue for a man?",
+    "something nice for a woman",
+    "recommend something for a party",
+    "something affordable for women",
+    "something comfortable for men",
+    "what should I wear to a party",
+    "something stylish for a man",
+])
+def test_natural_clothing_recommendation_queries_are_valid(parser, query):
+    assert parser.is_clothing_query(query)
+
+def test_natural_recommendation_parser_extracts_supported_signals(parser):
+    blue_man = parser.parse("can you recommend something blue for a man?")
+    assert blue_man["gender"] == "Men"
+    assert blue_man["color"] == "Blue"
+    assert blue_man["intent"] == "broad clothing"
+
+    party = parser.parse("recommend something stylish for a party")
+    assert party["style"] == "party"
+    assert party["intent"] == "party wear"
+
+    affordable = parser.parse("something affordable for women")
+    assert affordable["gender"] == "Women"
+    assert affordable["intent"] == "budget clothing"
+
+@pytest.mark.parametrize(
+    ("query", "expected_category", "expected_style"),
+    [
+        ("dress", "dresses", None),
+        ("dress shirt", "shirts", None),
+        ("formal dress", None, "formal"),
+        ("formal dress shirt", "shirts", "formal"),
+        ("party dress", "dresses", "party"),
+        ("casual dress", "dresses", "casual"),
+        ("formal wear", None, "formal"),
+        ("summer dress", "dresses", "summer"),
+    ],
+)
+def test_ambiguous_dress_phrases_are_interpreted_by_context(parser, query, expected_category, expected_style):
+    result = parser.parse(query)
+    assert result["category"] == expected_category
+    assert result["style"] == expected_style
+
 def test_parse_mens_oversized_hoodies(parser):
     res = parser.parse("men's oversized hoodies under 2500")
     assert res["gender"] == "Men"

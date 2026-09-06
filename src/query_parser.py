@@ -117,8 +117,19 @@ class QueryParser:
         self.style_descriptors = [
             "maxi", "midi", "mini", "floral", "printed", "casual", 
             "formal", "party", "solid", "striped", "sleeveless", 
-            "embroidered", "graphic"
+            "embroidered", "graphic", "summer", "office", "festive",
+            "trendy", "comfortable", "stylish", "nice"
         ]
+
+        self.semantic_intent_patterns = {
+            "party wear": r"\bparty\b|\boccasion\b|\bwedding\b",
+            "formal wear": r"\bformal\b|\boffice\b",
+            "casual wear": r"\bcasual\b|\beveryday\b",
+            "summer clothing": r"\bsummer\b",
+            "sportswear": r"\bsports?\b|\bgym\b|\bworkout\b",
+            "budget clothing": r"\baffordable\b|\bbudget\b|\bcheap\b|\binexpensive\b",
+            "broad clothing": r"\boutfit\b|\bclothing\b|\bclothes\b|\bapparel\b|\bsomething\b|\bwear\b",
+        }
 
         # Clothing vocabulary regex patterns for query validation
         self.clothing_validation_patterns = [
@@ -219,7 +230,17 @@ class QueryParser:
 
         # 2. Check if query parser extracts any known category, material, fit, or gender
         parsed = self.parse(query)
-        if parsed.get("category") or parsed.get("fit") or parsed.get("material") or parsed.get("style"):
+        if (
+            parsed.get("category")
+            or parsed.get("fit")
+            or parsed.get("material")
+            or parsed.get("style")
+            or parsed.get("intent")
+            or parsed.get("gender")
+            or parsed.get("color")
+            or parsed.get("max_price") is not None
+            or parsed.get("min_price") is not None
+        ):
             return True
 
         return False
@@ -239,6 +260,7 @@ class QueryParser:
             "gender": None,
             "category": None,
             "subcategory": None,
+            "intent": None,
             "color": None,
             "fit": None,
             "material": None,
@@ -288,8 +310,40 @@ class QueryParser:
         elif re.search(r"\b(unisex)\b", query_lower):
             parsed["gender"] = "Unisex"
 
-        # 3. Extract Category (sorted by length to match multi-word phrases first)
+        # Resolve dress-shirt phrases before the generic "dress" synonym. The
+        # catalog stores these products as shirts with a formal-dress-shirt
+        # subcategory, so treating "dress" as dresses would discard them.
+        dress_shirt_pattern = r"\b(?:formal\s+)?dress\s+shirts?\b"
+        if re.search(dress_shirt_pattern, query_lower):
+            parsed["category"] = "shirts"
+
+        # "Formal dress" is ambiguous in this catalog and should remain a
+        # semantic style request unless the user explicitly names dresses as
+        # the garment category (for example, "women's formal dresses").
+        formal_dress_context = (
+            re.search(r"\bformal(?:\s+\w+){0,3}\s+dress\b", query_lower)
+            and not re.search(r"\bdress\s+shirts?\b", query_lower)
+            and not re.search(r"\bdresses\b", query_lower)
+        )
+
+        # For men, singular "dress" commonly means an outfit or clothing
+        # request rather than the women's dress garment category. Keep gender
+        # hard-filtered, but leave garment selection to semantic retrieval.
+        broad_mens_dress_context = (
+            parsed["gender"] == "Men"
+            and re.search(r"\bdress(?:es)?\b", query_lower)
+            and not re.search(r"\bdress\s+shirts?\b", query_lower)
+        )
+        if broad_mens_dress_context:
+            parsed["intent"] = "broad clothing"
+
+        # Extract Category (sorted by length to match multi-word phrases first)
         for key in sorted(self.category_synonyms.keys(), key=len, reverse=True):
+            if parsed["category"] or (
+                key in ("dress", "dresses")
+                and (formal_dress_context or broad_mens_dress_context)
+            ):
+                continue
             pattern = r"\b" + re.escape(key) + r"\b"
             if re.search(pattern, query_lower):
                 parsed["category"] = self.category_synonyms[key]
@@ -308,6 +362,24 @@ class QueryParser:
             if re.search(pattern, query_lower):
                 parsed["style"] = style
                 break
+
+        # Extract soft occasion and recommendation intent independently of
+        # garment category. These values guide semantic retrieval/reranking;
+        # they are never passed to metadata filtering as database categories.
+        for intent, pattern in self.semantic_intent_patterns.items():
+            if re.search(pattern, query_lower):
+                parsed["intent"] = intent
+                break
+
+        if parsed.get("style") in {"formal", "office", "casual", "party", "summer", "festive"}:
+            parsed["intent"] = {
+                "formal": "formal wear",
+                "office": "office wear",
+                "casual": "casual wear",
+                "party": "party wear",
+                "summer": "summer clothing",
+                "festive": "occasion wear",
+            }[parsed["style"]]
 
         # 6. Extract Color
         for color in VALID_COLORS:

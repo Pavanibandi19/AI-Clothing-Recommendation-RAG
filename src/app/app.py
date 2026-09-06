@@ -24,8 +24,6 @@ from src.config import (
     VALID_CATEGORIES, VALID_GENDERS, VALID_FITS, 
     VALID_MATERIALS, VALID_COLORS, DEFAULT_TOP_K, DEFAULT_SIMILARITY_THRESHOLD
 )
-from src.retrieval import ProductRetriever
-from src.agent import RAGAgent
 
 
 def safe_text(value):
@@ -65,12 +63,23 @@ def render_product_card(column, product):
 # Cache expensive system initialization
 @st.cache_resource(show_spinner="Initializing AI Clothing Retrieval Engine...")
 def get_retriever():
+    from src.retrieval import ProductRetriever
     return ProductRetriever()
 
 
 @st.cache_resource(show_spinner="Initializing Ollama AI Agent...")
 def get_agent():
+    from src.agent import RAGAgent
     return RAGAgent()
+
+
+def _warmup_background():
+    """Warms up embedding model in the background so search is instant."""
+    try:
+        r = get_retriever()
+        r.embedder._ensure_model_loaded()
+    except Exception:
+        pass
 
 
 def run_app():
@@ -82,8 +91,11 @@ def run_app():
         initial_sidebar_state="expanded"
     )
 
-    retriever = get_retriever()
-    agent = get_agent()
+    # Trigger non-blocking background model warm-up on page load
+    if "engine_warmed" not in st.session_state:
+        st.session_state["engine_warmed"] = True
+        import threading
+        threading.Thread(target=_warmup_background, daemon=True).start()
 
     # Initialize session state variables
     if "user_query" not in st.session_state:
@@ -178,6 +190,9 @@ def run_app():
 
     # 3. Search Execution Pipeline
     if st.session_state.get("search_submitted") and active_user_query:
+        retriever = get_retriever()
+        agent = get_agent()
+        
         if not retriever.query_parser.is_clothing_query(active_user_query):
             st.warning("⚠️ Please enter a clothing-related search, such as 'blue jeans under 2000' or 'cotton shirts for men'.")
             st.stop()
@@ -283,30 +298,51 @@ def run_app():
                     st.markdown(fallback["text"])
                     st.caption(f"🧠 Rationale Source: {fallback['source']}")
 
-            # 6. RAG Retrieval Diagnostics Expander (Optional Developer Panel)
+            # 6. RAG Retrieval Diagnostics Expander (Developer / Mentor Review Panel)
             diagnostics = retrieval_results.get("diagnostics", {})
-            with st.expander("🛠️ Developer / RAG Diagnostics (Optional)"):
-                col_diag1, col_diag2, col_diag3 = st.columns(3)
+            with st.expander("🛠️ Developer / RAG Pipeline Diagnostics"):
                 v_active = diagnostics.get("vector_search_active", False)
-                col_diag1.metric("Vector Search Mode", "ChromaDB Dense Vector" if v_active else "Metadata Fallback")
-                col_diag2.metric("Chroma Index Size", f"{diagnostics.get('chroma_count', 0)} products")
-                col_diag3.metric("Hard Filter Candidates", f"{diagnostics.get('candidates_count', len(recommended_products))} products")
+                col_diag1, col_diag2, col_diag3, col_diag4 = st.columns(4)
+                col_diag1.metric("Vector Store", "ChromaDB Active" if v_active else "Metadata Fallback")
+                col_diag2.metric("Indexed Chunks", f"{diagnostics.get('chroma_count', 0)}")
+                col_diag3.metric("Chunks Retrieved", f"{diagnostics.get('retrieved_chunks_count', 0)}")
+                col_diag4.metric("Unique Candidates", f"{diagnostics.get('candidates_count', len(recommended_products))}")
 
-                st.markdown("##### 📐 Per-Product Relevance Scores & Vector Metrics")
+                st.markdown("##### 🔍 Query & Embedding Pipeline")
+                col_q1, col_q2 = st.columns(2)
+                with col_q1:
+                    st.json({
+                        "Original Query": active_user_query,
+                        "Parsed Constraints": parsed_constraints,
+                        "Query Embedding Model": "all-MiniLM-L6-v2",
+                        "Embedding Dimension": 384,
+                        "ChromaDB Collection": diagnostics.get("collection_name", "recomai_product_chunks")
+                    })
+                with col_q2:
+                    st.json({
+                        "Retrieved Chunk IDs": diagnostics.get("retrieved_chunk_ids", [])[:8],
+                        "Represented Product IDs": diagnostics.get("represented_product_ids", [])[:8],
+                        "Unique Products Before Filter": diagnostics.get("unique_products_before_filtering", 0),
+                        "Final Recommended Products": len(recommended_products)
+                    })
+
+                st.markdown("##### 📐 Final Reranked Products & Relevance Breakdown")
                 diag_rows = []
                 d_map = diagnostics.get("distances_map", {})
                 for p in recommended_products:
                     pid = str(p.get("product_id", ""))
-                    raw_dist = d_map.get(pid, "1.0000 (unranked fallback)")
+                    raw_dist = d_map.get(pid, 1.0)
                     dist_str = f"{raw_dist:.4f}" if isinstance(raw_dist, float) else str(raw_dist)
+                    matched_chunks_cnt = len(p.get("matched_chunks", []))
                     diag_rows.append({
                         "Product ID": pid,
                         "Brand": p.get("brand"),
                         "Product Name": p.get("product_name"),
                         "Price": f"₹{int(p.get('price_inr', 0))}",
-                        "Cosine Distance": dist_str,
+                        "Matched Chunks": matched_chunks_cnt,
+                        "Best Distance": dist_str,
                         "Semantic Sim": f"{p.get('semantic_similarity', 0.0):.4f}",
-                        "Hybrid Match": f"{p.get('match_percentage', 0)}%"
+                        "Hybrid Score": f"{p.get('match_percentage', 0)}%"
                     })
                 st.dataframe(diag_rows, use_container_width=True)
 
